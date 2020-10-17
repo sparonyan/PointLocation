@@ -18,7 +18,7 @@ public class ReadInFile {
 
             while (read.hasNext()) {
 
-                line = read.next();
+                line = read.nextLine();
                 String[] arr = line.split(";");
 
                 int index;
@@ -32,22 +32,22 @@ public class ReadInFile {
                 index = Integer.parseInt( arr[0].substring(1) );
                 int idx = arr[1].indexOf(" ");
                 double x = Integer.parseInt( arr[1].substring(0, idx) );
-                double y = Integer.parseInt( arr[1].substring(idx) );
+                double y = Integer.parseInt( arr[1].substring(idx+1) );
                 leftTop = new Point(x, y);
 
                 idx = arr[2].indexOf(" ");
                 x = Integer.parseInt( arr[2].substring(0, idx) );
-                y = Integer.parseInt( arr[2].substring(idx) );
+                y = Integer.parseInt( arr[2].substring(idx+1) );
                 leftBot = new Point(x, y);
 
                 idx = arr[3].indexOf(" ");
                 x = Integer.parseInt( arr[3].substring(0, idx) );
-                y = Integer.parseInt( arr[3].substring(idx) );
+                y = Integer.parseInt( arr[3].substring(idx+1) );
                 rightTop = new Point(x, y);
 
                 idx = arr[4].indexOf(" ");
                 x = Integer.parseInt( arr[4].substring(0, idx) );
-                y = Integer.parseInt( arr[4].substring(idx) );
+                y = Integer.parseInt( arr[4].substring(idx+1) );
                 rightBot = new Point(x, y);
 
                 String[] neighb = arr[5].split(" ");
@@ -57,9 +57,7 @@ public class ReadInFile {
 
                 String[] segm = arr[6].split(" ");
                 for (String el : segm) {
-                    if (el.equals("0")) {
-                        break;
-                    } else {
+                    if (el.length() != 0 && !el.equals("0")) {
                         segments.add(Integer.parseInt(el.substring(1)));
                     }
                 }

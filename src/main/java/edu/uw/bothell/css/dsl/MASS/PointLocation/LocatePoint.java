@@ -18,6 +18,8 @@ public class LocatePoint {
         List<Trapezoid> traps = new ArrayList<Trapezoid>();
         traps = ReadInFile.getTrapsList(inFile);
 
+        
+
 
 
     }
