@@ -3,6 +3,8 @@ package edu.uw.bothell.css.dsl.MASS.PointLocation;
 import edu.uw.bothell.css.dsl.MASS.MASS;
 import edu.uw.bothell.css.dsl.MASS.Place;
 
+import java.util.ArrayList;
+
 public class Cell extends Place {
 
     public static final int INIT_CELL = 0;
@@ -26,8 +28,8 @@ public class Cell extends Place {
     private int myIdx;
 
     public Cell(Object trapezoid) {
-        this.trapezoid = (Trapezoid)trapezoid;
-        MASS.getLogger( ).debug("Place" + getIdx() + ": created --> " + this.getIndex( )[0]  );
+        super();
+        MASS.getLogger( ).debug("Place " + this.getIndex( )[1] + " created " );
     }
 
 
@@ -49,13 +51,15 @@ public class Cell extends Place {
     }
 
 
-
     // args in the string form "size myIdx isVisited"
     public Object init(Object args) {
-        String[] arr = ((String)args).split(" ");
-        this.size = Integer.parseInt(arr[0]);
-        this.myIdx = Integer.parseInt(arr[1]);
-        this.isVisited = Integer.parseInt(arr[2]);
+        ArrayList<Trapezoid> list = (ArrayList)args;
+        this.size = list.size();
+        this.myIdx = getIndex( )[1];
+        trapezoid = list.get(myIdx);
+        result = null;
+        this.isVisited = 0;
+        MASS.getLogger( ).debug("Place with index " + myIdx + " has trapezoid -> " + trapezoid.getIndex() );
         return null;
     }
 
@@ -92,5 +96,8 @@ public class Cell extends Place {
         return this.trapezoid.getNeighbors();
     }
 
+    public Object getTrapezoid() {
+        return this.trapezoid;
+    }
 
 }
