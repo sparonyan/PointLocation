@@ -29,14 +29,14 @@ public class Cell extends Place {
 
     public Cell(Object trapezoid) {
         super();
-        MASS.getLogger( ).debug("Place " + this.getIndex( )[1] + " created " );
+        MASS.getLogger( ).debug("####### Place " + this.getIndex( )[0] + " created " );
     }
 
 
     public Object callMethod(int func, Object args) {
         switch (func) {
             case INIT_CELL: return init(args);
-            case SET_VISITED: setVisited(args);
+            case SET_VISITED: setIsVisited(args);
             case SET_RESULT: setResult(args);
             case LOCATE_POINT: return locatePoint(args);
 
@@ -55,15 +55,15 @@ public class Cell extends Place {
     public Object init(Object args) {
         ArrayList<Trapezoid> list = (ArrayList)args;
         this.size = list.size();
-        this.myIdx = getIndex( )[1];
+        this.myIdx = getIndex( )[0];
         trapezoid = list.get(myIdx);
         result = null;
         this.isVisited = 0;
-        MASS.getLogger( ).debug("Place with index " + myIdx + " has trapezoid -> " + trapezoid.getIndex() );
+        MASS.getLogger( ).debug("####### Place with index " + myIdx + " has trapezoid -> " + trapezoid.getIndex() );
         return null;
     }
 
-    public void setVisited(Object flag) {
+    public void setIsVisited(Object flag) {
         this.isVisited = (Integer) flag;
     }
 

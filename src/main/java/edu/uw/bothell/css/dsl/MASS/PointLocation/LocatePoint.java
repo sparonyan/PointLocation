@@ -32,26 +32,49 @@ public class LocatePoint {
         // start MASS
         MASS.init();
 
-        Places places = new Places(1, Cell.class.getName(), null, 1, traps.size());
-        MASS.getLogger( ).debug("==== Places size is " + places.getPlacesSize() );
-        System.out.println("==== Point Location: Places of dimension: "+ 0 +
-                            " x " +traps.size() +" created!");
+        Places places = new Places(1, Cell.class.getName(), null, traps.size());
+        MASS.getLogger( ).debug("####### Places size is " + places.getPlacesSize() );
+        System.out.println("####### Point Location: Places of dimension: " + traps.size() +" created!");
 
         places.callAll(Cell.INIT_CELL, traps);
 
 
-        ArgsForAgent arguments = new ArgsForAgent(0, new Point(140, 120), null);
+        //ArgsForAgent arguments = new ArgsForAgent(0, new Point(140, 120), null);
+        //ArgsForAgent arguments = new ArgsForAgent(0, new Point(20, 200), null);
+        ArgsForAgent arguments = new ArgsForAgent(0, new Point(55, 300), null, 0, traps.size());
         Agents agents = new Agents(2, Crawler.class.getName(), arguments, places, 1);
 
         agents.doWhile( ()->agents.hasAgents() );
 
-        Place[] placesList = places.getPlaces();
-       // Cell first = (Cell)placesList[0];
-       // Trapezoid result = (Trapezoid)first.getResult();
-       /* if (result != null) {
-            MASS.getLogger( ).debug("====== RESULT IS trapezoid [" + result.getIndex() + "]");
+        System.out.println("####### Exited doWhile !");
+        //Place[] placesList = places.getPlaces();
+        //Cell first = (Cell)placesList[0];
+        //Trapezoid result = (Trapezoid)placesList[0].getResult();
+        /*if (result != null) {
+            MASS.getLogger( ).debug("####### RESULT IS trapezoid [" + result.getIndex() + "]");
+        }*/
+
+        // verify that all Cells have been visited
+        Object[] calledPlacesResults = ( Object[] ) places.callAll( 0, new Object[ traps.size() ] );
+        boolean allVisited = true;
+        for ( Object o : calledPlacesResults ) {
+
+            if ( (int) o != Cell.GET_VISITED ) {
+                allVisited = false;
+                break;
+            }
+
         }
-        */
+
+        if ( allVisited ) {
+            System.out.println("####### All Cells were visited!");
+        }
+        else {
+            System.out.println("####### Some Cells were missed!");
+        }
+
+
         MASS.finish( );
+        System.out.println("####### Shut down mass !");
     }
 }
