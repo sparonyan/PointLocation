@@ -1,9 +1,14 @@
 package edu.uw.bothell.css.dsl.MASS.PointLocation;
 
-import edu.uw.bothell.css.dsl.MASS.Place;
-
 import java.io.Serializable;
 
+/**
+ * edu.uw.bothell.css.dsl.MASS.PointLocation.ArgsForAgent.java
+ * Project: edu.uw.bothell.css.dsl.MASS.PointLocation.PointLocation
+ * University of Washington Bothell, Distributed Systems Laboratory
+ * Autumn 2020
+ * @author Satine Paronyan
+ */
 public class ArgsForAgent implements Serializable {
     int nextCell = -1;
     Point query = null;

@@ -5,6 +5,13 @@ import edu.uw.bothell.css.dsl.MASS.Place;
 
 import java.util.ArrayList;
 
+/**
+ * edu.uw.bothell.css.dsl.MASS.PointLocation.Cell.java
+ * Project: edu.uw.bothell.css.dsl.MASS.PointLocation.PointLocation
+ * University of Washington Bothell, Distributed Systems Laboratory
+ * Autumn 2020
+ * @author Satine Paronyan
+ */
 public class Cell extends Place {
 
     public static final int INIT_CELL = 0;

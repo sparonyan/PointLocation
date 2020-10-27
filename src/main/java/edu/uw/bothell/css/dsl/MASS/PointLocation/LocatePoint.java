@@ -2,13 +2,18 @@ package edu.uw.bothell.css.dsl.MASS.PointLocation;
 
 import edu.uw.bothell.css.dsl.MASS.Agents;
 import edu.uw.bothell.css.dsl.MASS.MASS;
-import edu.uw.bothell.css.dsl.MASS.Place;
 import edu.uw.bothell.css.dsl.MASS.Places;
 import edu.uw.bothell.css.dsl.MASS.logging.LogLevel;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * edu.uw.bothell.css.dsl.MASS.PointLocation.LocatePoint.java
+ * Project: edu.uw.bothell.css.dsl.MASS.PointLocation.Point Location
+ * University of Washington Bothell, Distributed Systems Laboratory
+ * Autumn 2020
+ * @author Satine Paronyan
+ */
 public class LocatePoint {
     private static final String NODE_FILE = "nodes.xml";
 
@@ -20,9 +25,8 @@ public class LocatePoint {
             System.exit( -1 );
         }
 
-        String inFile = args[0];
-        List<Trapezoid> traps = new ArrayList<Trapezoid>();
-        traps = ReadInFile.getTrapsList(inFile);
+        String inFile = args[0];  // input file name
+        List<Trapezoid> traps = ReadInFile.getTrapsList(inFile);
 
         // init MASS library
         MASS.setNodeFilePath( NODE_FILE );
@@ -32,49 +36,64 @@ public class LocatePoint {
         // start MASS
         MASS.init();
 
+        long startTime = System.currentTimeMillis( );
+
         Places places = new Places(1, Cell.class.getName(), null, traps.size());
         MASS.getLogger( ).debug("####### Places size is " + places.getPlacesSize() );
         System.out.println("####### Point Location: Places of dimension: " + traps.size() +" created!");
-
         places.callAll(Cell.INIT_CELL, traps);
 
+        long placesInitTime = System.currentTimeMillis( );
 
-        //ArgsForAgent arguments = new ArgsForAgent(0, new Point(140, 120), null);
+        // point is in trapezoid 1
         //ArgsForAgent arguments = new ArgsForAgent(0, new Point(20, 200), null);
-        ArgsForAgent arguments = new ArgsForAgent(0, new Point(55, 300), null, 0, traps.size());
+
+        // point is in trapezoid 2
+        //ArgsForAgent arguments = new ArgsForAgent(0, new Point(55, 300), null, 0, traps.size());
+
+        // point is in trapezoid 3
+        //ArgsForAgent arguments = new ArgsForAgent(0, new Point(80, 120), null, 0, traps.size());
+
+        // point is in trapezoid 9
+        ArgsForAgent arguments = new ArgsForAgent(0, new Point(270, 400), null, 0, traps.size());
+
+        // Start by creating only one agent at place with index 0
         Agents agents = new Agents(2, Crawler.class.getName(), arguments, places, 1);
 
-        agents.doWhile( ()->agents.hasAgents() );
+        // Once all agents terminated with kill() the while loop exits
+        agents.doWhile(agents::hasAgents);
 
         System.out.println("####### Exited doWhile !");
-        //Place[] placesList = places.getPlaces();
-        //Cell first = (Cell)placesList[0];
-        //Trapezoid result = (Trapezoid)placesList[0].getResult();
-        /*if (result != null) {
-            MASS.getLogger( ).debug("####### RESULT IS trapezoid [" + result.getIndex() + "]");
-        }*/
 
-        // verify that all Cells have been visited
-        Object[] calledPlacesResults = ( Object[] ) places.callAll( 0, new Object[ traps.size() ] );
-        boolean allVisited = true;
-        for ( Object o : calledPlacesResults ) {
+        // Time measurement ends
+        long graphCreationTime = (placesInitTime - startTime);
+        long totalElapsedTime = (System.currentTimeMillis( ) - startTime);
+        System.out.println( "####### Graph Generation Time: " + graphCreationTime + " milliseconds" );
+        System.err.println( "####### Elapsed Time: " + totalElapsedTime + " milliseconds" );
 
-            if ( (int) o != Cell.GET_VISITED ) {
-                allVisited = false;
+        // Check if point has been found in any of the trapezoids.
+        Object[] placesResults = places.callAll( 3 , new Object[traps.size()] );
+        boolean result = false;
+        Trapezoid resTrap = null;
+
+        for ( Object obj : placesResults ) {
+            if ( (Trapezoid) obj != null ) {
+                result = true;
+                resTrap = (Trapezoid)obj;
                 break;
             }
 
         }
 
-        if ( allVisited ) {
-            System.out.println("####### All Cells were visited!");
-        }
-        else {
-            System.out.println("####### Some Cells were missed!");
+        if ( result ) {
+            System.err.println( "####### RESULT found in trapezoid [" + resTrap.getIndex() + "]" );
+        } else {
+            System.err.println("####### RESULT Not Found");
+
         }
 
 
         MASS.finish( );
-        System.out.println("####### Shut down mass !");
+        System.out.println("####### Stopped Mass !");
     }
 }

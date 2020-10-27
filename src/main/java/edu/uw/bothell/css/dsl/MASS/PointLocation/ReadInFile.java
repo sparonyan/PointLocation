@@ -2,11 +2,19 @@ package edu.uw.bothell.css.dsl.MASS.PointLocation;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ReadInFile {
+/**
+ * edu.uw.bothell.css.dsl.MASS.PointLocation.ReadInFile.java
+ * Project: edu.uw.bothell.css.dsl.MASS.PointLocation.PointLocation
+ * University of Washington Bothell, Distributed Systems Laboratory
+ * Autumn 2020
+ * @author Satine Paronyan
+ */
+public class ReadInFile implements Serializable {
     public static List<Trapezoid> getTrapsList(String inFile)  {
 
         List<Trapezoid> res = new ArrayList<Trapezoid>();
